@@ -37,7 +37,7 @@ function removeConsoleTempCalls(content) {
             const beforeCall = line.slice(0, idx);
             const isStandaloneLine = /^\s*$/.test(beforeCall);
 
-            // Count paren depth starting from the opening paren of console.temp(
+            // Count paren depth starting from the opening paren of console
             let d = 0;
             let j = idx + 'console.temp'.length;
             for (; j < line.length; j++) {
@@ -56,7 +56,7 @@ function removeConsoleTempCalls(content) {
                     // Whole line is just this call — drop it
                     continue;
                 }
-                // Inline: remove the console.temp(...) portion plus optional trailing semicolon
+                // Inline: remove the console.tem portion plus optional trailing semicolon
                 const afterClosingParen = line.slice(j + 1).replace(/^;?\s*/, '');
                 const cleaned = (beforeCall + afterClosingParen).trimEnd();
                 if (cleaned.trim() !== '') result.push(cleaned);
@@ -71,7 +71,7 @@ function removeConsoleTempCalls(content) {
                 }
             }
         } else {
-            // Inside a multi-line console.temp(...) — scan until depth hits 0
+            // Inside a multi-line console — scan until depth hits 0
             for (const char of line) {
                 if (char === '(') depth++;
                 else if (char === ')') {
@@ -104,7 +104,7 @@ const args = process.argv.slice(2);
 const targets = args.length > 0 ? args : null;
 
 const files = targets
-    ? targets.filter((t) => {
+    ? targets.filter(t => {
           try {
               return statSync(t).isFile() && EXTENSIONS.has(extname(t));
           } catch {

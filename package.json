@@ -8,7 +8,7 @@
     "scripts": {
         "fmt": "oxfmt packages",
         "lint": "oxlint --fix packages",
-        "prepare": "simple-git-hooks"
+        "prepare": "[ -n \"$CI\" ] || simple-git-hooks"
     },
     "devDependencies": {
         "console-temp": "workspace:*",
@@ -18,8 +18,7 @@
         "simple-git-hooks": "^2.13.1"
     },
     "simple-git-hooks": {
-        "pre-commit": "pnpm exec lint-staged",
-        "post-commit": "pnpm exec console-temp"
+        "pre-commit": "pnpm exec lint-staged"
     },
     "lint-staged": {
         "*.{ts,tsx,js,jsx}": [

@@ -26,11 +26,7 @@ importers:
 
   packages/console-temp: {}
 
-  packages/test:
-    dependencies:
-      console-temp:
-        specifier: workspace:*
-        version: link:../console-temp
+  packages/test: {}
 
 packages:
 
