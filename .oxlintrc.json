@@ -1,0 +1,22 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["typescript"],
+    "categories": {
+        "correctness": "error",
+        "suspicious": "warn",
+        "perf": "warn"
+    },
+    "rules": {
+        "no-debugger": "error",
+        "eqeqeq": "error",
+        "prefer-const": "warn",
+        "no-var": "error"
+    },
+    "env": {
+        "builtin": true,
+        "browser": true,
+        "node": true,
+        "es2022": true
+    },
+    "ignorePatterns": ["node_modules/**"]
+}

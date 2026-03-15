@@ -1,0 +1,32 @@
+{
+    "name": "utils",
+    "version": "1.0.0",
+    "description": "",
+    "keywords": [],
+    "license": "ISC",
+    "author": "",
+    "scripts": {
+        "fmt": "oxfmt packages",
+        "lint": "oxlint --fix packages",
+        "prepare": "simple-git-hooks"
+    },
+    "devDependencies": {
+        "lint-staged": "^16.4.0",
+        "oxfmt": "^0.40.0",
+        "oxlint": "^1.55.0",
+        "simple-git-hooks": "^2.13.1"
+    },
+    "simple-git-hooks": {
+        "pre-commit": "pnpm exec lint-staged"
+    },
+    "lint-staged": {
+        "*.{ts,tsx,js,jsx}": [
+            "oxfmt --write",
+            "oxlint --fix"
+        ],
+        "*.{json,md,css,html}": [
+            "oxfmt --write"
+        ]
+    },
+    "packageManager": "pnpm@10.32.0"
+}
