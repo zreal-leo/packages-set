@@ -5,6 +5,11 @@
     "keywords": [],
     "license": "ISC",
     "author": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/zreal-leo/packages-set",
+        "directory": "packages/console-temp"
+    },
     "bin": {
         "console-temp": "./bin/clean.js"
     },
