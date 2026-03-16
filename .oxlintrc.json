@@ -10,7 +10,8 @@
         "no-debugger": "error",
         "eqeqeq": "error",
         "prefer-const": "warn",
-        "no-var": "error"
+        "no-var": "error",
+        "no-unused-vars": "warn"
     },
     "env": {
         "builtin": true,

@@ -8,9 +8,10 @@
     "scripts": {
         "fmt": "oxfmt packages",
         "lint": "oxlint --fix packages",
-        "prepare": "simple-git-hooks"
+        "prepare": "[ -n \"$CI\" ] || simple-git-hooks"
     },
     "devDependencies": {
+        "console-temp": "workspace:*",
         "lint-staged": "^16.4.0",
         "oxfmt": "^0.40.0",
         "oxlint": "^1.55.0",

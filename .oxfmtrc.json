@@ -9,7 +9,7 @@
     "trailingComma": "none",
     "bracketSpacing": true,
     "bracketSameLine": false,
-    "arrowParens": "always",
+    "arrowParens": "avoid",
     "endOfLine": "lf",
     "ignorePatterns": ["node_modules/**", "pnpm-lock.yaml"]
 }
