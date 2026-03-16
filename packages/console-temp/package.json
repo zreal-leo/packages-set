@@ -1,6 +1,6 @@
 {
     "name": "console-temp",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Extend console.temp for temporary logging, with a bin to strip all calls before committing.",
     "keywords": [],
     "license": "ISC",
