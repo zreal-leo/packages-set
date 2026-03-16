@@ -5,6 +5,10 @@
     "keywords": [],
     "license": "ISC",
     "author": "",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zreal-leo/packages-set.git"
+    },
     "scripts": {
         "fmt": "oxfmt packages",
         "lint": "oxlint --fix packages",
