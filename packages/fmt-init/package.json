@@ -5,7 +5,9 @@
     "keywords": [],
     "license": "ISC",
     "author": "",
-    "main": "index.js",
+    "bin": {
+        "fmt-init": "./bin/index.js"
+    },
     "scripts": {
         "test": "node index"
     },
