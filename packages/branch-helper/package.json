@@ -11,7 +11,8 @@
     "author": "",
     "repository": {
         "type": "git",
-        "url": "git@github.com:zreal-leo/branch-helper.git"
+        "url": "git@github.com:zreal-leo/packages-set",
+        "directory": "packages/branch-helper"
     },
     "bin": "src/command.js",
     "files": [
