@@ -14,7 +14,7 @@
         "fmt": "oxfmt packages",
         "lint": "oxlint --fix packages",
         "prepare": "[ -n \"$CI\" ] || simple-git-hooks",
-        "changeset": "changeset"
+        "changeset": "changeset && changeset version"
     },
     "devDependencies": {
         "@changesets/cli": "^2.31.0",

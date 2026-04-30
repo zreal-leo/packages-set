@@ -1,6 +1,6 @@
 {
     "name": "branch-create",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "git branch create tool",
     "keywords": [
         "branch",
@@ -16,7 +16,8 @@
     },
     "bin": "src/command.js",
     "files": [
-        "src"
+        "src",
+        "changelog.md"
     ],
     "type": "module",
     "scripts": {},
