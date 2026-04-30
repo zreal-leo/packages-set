@@ -1,11 +1,15 @@
 {
     "name": "fmt-init",
     "version": "1.0.0",
-    "private": false,
     "description": "",
     "keywords": [],
     "license": "ISC",
     "author": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/zreal-leo/packages-set",
+        "directory": "packages/fmt-init"
+    },
     "bin": {
         "fmt-init": "./bin/index.js"
     },
