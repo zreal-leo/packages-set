@@ -15,5 +15,5 @@ console.temp('Hello, world!');
 ## clean console.temp calls
 
 ```shell
-console-temp
+npx console-temp
 ```
