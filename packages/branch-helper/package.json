@@ -1,0 +1,31 @@
+{
+    "name": "branch-create",
+    "version": "1.0.5",
+    "description": "git branch create tool",
+    "keywords": [
+        "branch",
+        "git",
+        "log"
+    ],
+    "license": "ISC",
+    "author": "",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:zreal-leo/branch-helper.git"
+    },
+    "bin": "src/command.js",
+    "files": [
+        "src"
+    ],
+    "type": "module",
+    "scripts": {},
+    "dependencies": {
+        "@inquirer/prompts": "^8.4.2",
+        "await-to-js": "^3.0.0",
+        "chalk": "^5.3.0",
+        "commander": "^12.0.0",
+        "fs-extra": "^11.2.0",
+        "zx": "^7.2.3"
+    },
+    "devDependencies": {}
+}
