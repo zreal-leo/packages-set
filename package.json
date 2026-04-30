@@ -13,9 +13,11 @@
     "scripts": {
         "fmt": "oxfmt packages",
         "lint": "oxlint --fix packages",
-        "prepare": "[ -n \"$CI\" ] || simple-git-hooks"
+        "prepare": "[ -n \"$CI\" ] || simple-git-hooks",
+        "changeset": "changeset"
     },
     "devDependencies": {
+        "@changesets/cli": "^2.31.0",
         "console-temp": "workspace:*",
         "lint-staged": "^16.4.0",
         "oxfmt": "^0.40.0",
