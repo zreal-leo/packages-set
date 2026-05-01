@@ -1,0 +1,29 @@
+{
+    "name": "fmt-init",
+    "version": "1.0.7",
+    "description": "",
+    "keywords": [],
+    "license": "ISC",
+    "author": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/zreal-leo/packages-set",
+        "directory": "packages/fmt-init"
+    },
+    "bin": "./dist/index.js",
+    "files": [
+        "dist",
+        "template"
+    ],
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "prepublishOnly": "pnpm run build"
+    },
+    "devDependencies": {
+        "@inquirer/prompts": "^8.4.2",
+        "chalk": "^5.6.2",
+        "fs-extra": "^11.3.4"
+    },
+    "packageManager": "pnpm@10.32.0"
+}
