@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { select } from '@inquirer/prompts';
-import { copyFile, readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import fse from 'fs-extra';
@@ -18,28 +18,31 @@ const fmtPackage = await select({
 
 switch (fmtPackage) {
     case 'prettier':
-        initPrettier();
+        await initPrettier();
         break;
     case 'oxfmt':
-        initOxfmt();
+        await initOxfmt();
         break;
 }
 
-function initPrettier() {
+async function initPrettier() {
     const fileName = '.prettierrc.js';
     const srcPath = join(packageRoot, `../template/${fileName}`);
     const distPath = join(process.cwd(), fileName);
-    copyFile(srcPath, distPath);
-    addDevDependencies('prettier', '^3.8.3');
+    const content = await readFile(srcPath, 'utf-8');
+    await writeFile(distPath, content);
+    await addDevDependencies('prettier', '^3.8.3');
+    await addSetting('prettier');
 }
-function initOxfmt() {
+async function initOxfmt() {
     const fileName = '.oxfmtrc.json';
     const srcPath = join(packageRoot, `../template/${fileName}`);
     const distPath = join(process.cwd(), fileName);
-    copyFile(srcPath, distPath);
-    addDevDependencies('oxfmt', '^0.47.0');
+    const content = await readFile(srcPath, 'utf-8');
+    await writeFile(distPath, content);
+    await addDevDependencies('oxfmt', '^0.47.0');
 
-    addSetting('oxfmt');
+    await addSetting('oxfmt');
 }
 
 async function addDevDependencies(plugin, version) {
