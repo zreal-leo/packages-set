@@ -1,6 +1,6 @@
 {
     "name": "branch-create",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "git branch create tool",
     "keywords": [
         "branch",
