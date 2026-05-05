@@ -11,28 +11,28 @@
         "url": "git+https://github.com/zreal-leo/packages-set.git"
     },
     "scripts": {
-        "fmt": "oxfmt packages",
-        "lint": "oxlint --fix packages",
+        "fmt": "oxfmt build packages",
+        "lint": "npm run typecheck && oxlint --fix build packages",
         "prepare": "[ -n \"$CI\" ] || simple-git-hooks",
-        "release": "changeset add && changeset version"
+        "release": "changeset add && changeset version",
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "@changesets/cli": "^2.31.0",
+        "@types/fs-extra": "^11.0.4",
+        "@types/node": "^24.0.0",
         "lint-staged": "^16.4.0",
         "oxfmt": "^0.40.0",
         "oxlint": "^1.55.0",
         "simple-git-hooks": "^2.13.1",
+        "typescript": "^6.0.3",
         "vite": "^7.3.2"
     },
     "simple-git-hooks": {
-        "pre-commit": "pnpm exec lint-staged"
+        "pre-commit": "pnpm run lint && pnpm exec lint-staged"
     },
     "lint-staged": {
-        "*.{ts,tsx,js,jsx}": [
-            "oxfmt --write",
-            "oxlint --fix"
-        ],
-        "*.{json,md,css,html}": [
+        "*": [
             "oxfmt --write"
         ]
     },

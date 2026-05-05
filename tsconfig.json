@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "allowImportingTsExtensions": true,
+        "allowJs": false,
+        "checkJs": false,
+        "declaration": false,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "isolatedModules": true,
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "ES2022",
+        "types": ["node"]
+    },
+    "include": ["build/**/*.ts", "packages/**/*.ts"],
+    "exclude": ["node_modules", "dist", "packages/**/dist"]
+}

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
-import { join, relative, extname } from 'node:path';
+import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { cwd } from 'node:process';
+import { extname, join, relative } from 'node:path';
 
 const EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mts', '.cts', '.mjs', '.cjs']);
 const IGNORE_DIRS = new Set(['node_modules', '.git', 'dist', 'build', '.turbo', '.next', 'out']);
 
-function walkDir(dir, files = []) {
+function walkDir(dir: string, files: string[] = []) {
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
         if (IGNORE_DIRS.has(entry.name)) continue;
         const fullPath = join(dir, entry.name);
@@ -19,9 +19,9 @@ function walkDir(dir, files = []) {
     return files;
 }
 
-function removeConsoleTempCalls(content) {
+function removeConsoleTempCalls(content: string) {
     const lines = content.split('\n');
-    const result = [];
+    const result: string[] = [];
     let inTempCall = false;
     let depth = 0;
     let modified = false;
@@ -37,7 +37,7 @@ function removeConsoleTempCalls(content) {
             const beforeCall = line.slice(0, idx);
             const isStandaloneLine = /^\s*$/.test(beforeCall);
 
-            // Count paren depth starting from the opening paren of console
+            // Count paren depth starting from the opening paren of console.temp.
             let d = 0;
             let j = idx + 'console.temp'.length;
             for (; j < line.length; j++) {
@@ -51,27 +51,21 @@ function removeConsoleTempCalls(content) {
             modified = true;
 
             if (d === 0) {
-                // Call closed on the same line
                 if (isStandaloneLine) {
-                    // Whole line is just this call — drop it
                     continue;
                 }
-                // Inline: remove the console.tem portion plus optional trailing semicolon
                 const afterClosingParen = line.slice(j + 1).replace(/^;?\s*/, '');
                 const cleaned = (beforeCall + afterClosingParen).trimEnd();
                 if (cleaned.trim() !== '') result.push(cleaned);
             } else {
-                // Multi-line call — start tracking
                 inTempCall = true;
                 depth = d;
                 if (!isStandaloneLine) {
-                    // Keep the part of the line before the call
                     const trimmed = beforeCall.trimEnd();
                     if (trimmed) result.push(trimmed);
                 }
             }
         } else {
-            // Inside a multi-line console — scan until depth hits 0
             for (const char of line) {
                 if (char === '(') depth++;
                 else if (char === ')') {
@@ -82,14 +76,13 @@ function removeConsoleTempCalls(content) {
                     }
                 }
             }
-            // Drop this line
         }
     }
 
     return { content: result.join('\n'), modified };
 }
 
-function cleanFile(filePath) {
+function cleanFile(filePath: string) {
     const raw = readFileSync(filePath, 'utf-8');
     console.log();
     const { content, modified } = removeConsoleTempCalls(raw);
