@@ -31,7 +31,7 @@ switch (fmtPackage) {
 }
 
 async function initPrettier() {
-    const fileName = '.prettierrc.js';
+    const fileName = '.prettierrc';
     const srcPath = join(packageRoot, `../template/${fileName}`);
     const distPath = join(process.cwd(), fileName);
     const content = await readFile(srcPath, 'utf-8');
