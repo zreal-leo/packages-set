@@ -1,5 +1,11 @@
 # fmt-init
 
+## 1.0.10
+
+### Patch Changes
+
+- 调整 prettier 配置文件
+
 ## 1.0.9
 
 ### Patch Changes
