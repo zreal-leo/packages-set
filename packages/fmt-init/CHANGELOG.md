@@ -1,5 +1,11 @@
 # fmt-init
 
+## 1.0.11
+
+### Patch Changes
+
+- 9c7d342: fmt-init 默认 prettier
+
 ## 1.0.10
 
 ### Patch Changes
