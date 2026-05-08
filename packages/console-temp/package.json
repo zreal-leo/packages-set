@@ -14,7 +14,8 @@
         "console-temp": "./dist/clean.js"
     },
     "files": [
-        "dist"
+        "dist",
+        "CHANGELOG.md"
     ],
     "type": "module",
     "main": "./dist/index.js",

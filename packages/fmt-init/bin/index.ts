@@ -15,7 +15,7 @@ const fmtPackage = await select<Formatter>({
         { name: 'prettier', value: 'prettier' },
         { name: 'oxfmt', value: 'oxfmt' }
     ],
-    default: 'oxfmt'
+    default: 'prettier'
 });
 
 switch (fmtPackage) {

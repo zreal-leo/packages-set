@@ -13,7 +13,8 @@
     "bin": "./dist/index.js",
     "files": [
         "dist",
-        "template"
+        "template",
+        "CHANGELOG.md"
     ],
     "type": "module",
     "scripts": {
