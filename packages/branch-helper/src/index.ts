@@ -2,9 +2,9 @@
 import { input } from '@inquirer/prompts';
 import { to } from 'await-to-js';
 import chalk from 'chalk';
+import { spawn } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { $ } from 'zx';
 
 type BranchLogEntry = {
     branchName: string;
@@ -31,8 +31,19 @@ export async function prompt(sourceBranch: string) {
     successLog(`Branch ${branchName} created successfully`);
 }
 
+function spawnGit(args: string[]): Promise<number | null> {
+    return new Promise((resolve, reject) => {
+        const child = spawn('git', args, { stdio: 'inherit' });
+        child.on('error', reject);
+        child.on('close', resolve);
+    });
+}
+
 async function createBranch(branchName: string, sourceBranch: string) {
-    await $`git checkout -b ${branchName} origin/${sourceBranch}`;
+    const code = await spawnGit(['checkout', '-b', branchName, `origin/${sourceBranch}`]);
+    if (code !== 0) {
+        throw new Error(`git checkout failed${code === null ? '' : ` (exit ${code})`}`);
+    }
 }
 
 async function readLog(filePath: string): Promise<BranchLogEntry[]> {
