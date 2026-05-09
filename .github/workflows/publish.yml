@@ -2,8 +2,8 @@ name: Publish Package
 
 on:
     push:
-        branches:
-            - main
+        tags:
+            - '*@*'
 
 permissions:
     id-token: write
@@ -12,7 +12,6 @@ permissions:
 jobs:
     publish:
         runs-on: ubuntu-latest
-        if: startsWith(github.event.head_commit.message, 'RELEASING')
         steps:
             - uses: actions/checkout@v6
             - uses: pnpm/action-setup@v6
@@ -20,5 +19,6 @@ jobs:
               with:
                   node-version: '24'
                   registry-url: 'https://registry.npmjs.org'
-            - run: pnpm i
+                  cache: 'pnpm'
+            - run: pnpm ci
             - run: pnpm changeset publish
