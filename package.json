@@ -1,5 +1,5 @@
 {
-    "name": "utils",
+    "name": "packages-set",
     "version": "1.0.0",
     "private": true,
     "description": "",
@@ -10,12 +10,14 @@
         "type": "git",
         "url": "git+https://github.com/zreal-leo/packages-set.git"
     },
+    "type": "module",
     "scripts": {
         "fmt": "oxfmt build packages",
         "lint": "npm run typecheck && oxlint --fix build packages",
         "prepare": "[ -n \"$CI\" ] || simple-git-hooks",
         "release": "changeset add && changeset version",
-        "typecheck": "tsc --noEmit"
+        "typecheck": "tsc --noEmit",
+        "plop": "plop"
     },
     "devDependencies": {
         "@changesets/cli": "^2.31.0",
@@ -24,6 +26,7 @@
         "lint-staged": "^16.4.0",
         "oxfmt": "^0.40.0",
         "oxlint": "^1.55.0",
+        "plop": "^4.0.5",
         "simple-git-hooks": "^2.13.1",
         "typescript": "^6.0.3",
         "vite": "^7.3.2"

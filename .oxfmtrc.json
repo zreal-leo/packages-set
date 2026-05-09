@@ -11,5 +11,5 @@
     "bracketSameLine": false,
     "arrowParens": "avoid",
     "endOfLine": "lf",
-    "ignorePatterns": ["node_modules/**", "pnpm-lock.yaml"]
+    "ignorePatterns": ["node_modules/**", "pnpm-lock.yaml", "plop-templates/**"]
 }
