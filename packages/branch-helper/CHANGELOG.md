@@ -1,5 +1,11 @@
 # branch-create
 
+## 1.0.10
+
+### Patch Changes
+
+- a7fddde: 体积优化
+
 ## 1.0.9
 
 ### Patch Changes
