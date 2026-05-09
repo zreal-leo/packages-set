@@ -2,8 +2,8 @@ name: Publish Package
 
 on:
     push:
-        tags:
-            - '*@*'
+        branches:
+            - main
 
 permissions:
     id-token: write
@@ -12,6 +12,7 @@ permissions:
 jobs:
     publish:
         runs-on: ubuntu-latest
+        if: github.event.head_commit && startsWith(github.event.head_commit.message, 'RELEASING')
         steps:
             - uses: actions/checkout@v6
             - uses: pnpm/action-setup@v6
