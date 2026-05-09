@@ -4,7 +4,7 @@ import { to } from 'await-to-js';
 import chalk from 'chalk';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { $ } from 'zx';
+import { $ } from 'zx/core';
 
 type BranchLogEntry = {
     branchName: string;
