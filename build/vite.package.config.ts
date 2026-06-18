@@ -1,7 +1,7 @@
 import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
 import { builtinModules } from 'node:module';
 import { dirname, relative, resolve } from 'node:path';
-import { defineConfig, type Plugin, type UserConfig } from 'vite';
+import { defineConfig, esmExternalRequirePlugin, type Plugin, type UserConfig } from 'vite';
 
 type PackageJson = {
     dependencies?: Record<string, string>;
@@ -88,6 +88,35 @@ function copyTypesPlugin(
     };
 }
 
+function esmRequireShimPlugin(): Plugin {
+    const shim = [
+        "import { createRequire as __createRequire } from 'node:module';",
+        'const require = __createRequire(import.meta.url);'
+    ].join('\n');
+
+    return {
+        name: 'package-esm-require-shim',
+        renderChunk(code, _chunk, outputOptions) {
+            if (outputOptions.format !== 'es' || !code.includes('Calling `require`')) {
+                return null;
+            }
+
+            if (!code.startsWith('#!')) {
+                return {
+                    code: `${shim}\n${code}`,
+                    map: null
+                };
+            }
+
+            const shebangEnd = code.indexOf('\n');
+            return {
+                code: `${code.slice(0, shebangEnd + 1)}${shim}\n${code.slice(shebangEnd + 1)}`,
+                map: null
+            };
+        }
+    };
+}
+
 export function definePackageConfig({
     entries,
     packageRoot = process.cwd(),
@@ -126,6 +155,11 @@ export function definePackageConfig({
             sourcemap: false,
             target: 'node22'
         },
-        plugins: [shebangPlugin(normalizedEntries), copyTypesPlugin(packageRoot, normalizedEntries)]
+        plugins: [
+            esmExternalRequirePlugin(),
+            esmRequireShimPlugin(),
+            shebangPlugin(normalizedEntries),
+            copyTypesPlugin(packageRoot, normalizedEntries)
+        ]
     });
 }
