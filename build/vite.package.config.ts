@@ -114,7 +114,7 @@ export function definePackageConfig({
             emptyOutDir: true,
             minify: true,
             outDir: resolve(packageRoot, 'dist'),
-            rollupOptions: {
+            rolldownOptions: {
                 external: id => isExternal(id, externalDependencies),
                 input,
                 output: {
