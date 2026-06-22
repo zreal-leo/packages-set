@@ -1,5 +1,11 @@
 # console-temp
 
+## 1.0.8
+
+### Patch Changes
+
+- e5e29f3: 升级
+
 ## 1.0.7
 
 ### Patch Changes
