@@ -1,5 +1,11 @@
 # fmt-init
 
+## 1.0.12
+
+### Patch Changes
+
+- 升级构建与交互式 CLI 相关依赖。
+
 ## 1.0.11
 
 ### Patch Changes
