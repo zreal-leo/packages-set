@@ -1,5 +1,11 @@
 # fmt-init
 
+## 1.0.12
+
+### Patch Changes
+
+- 75368bc: 依赖升级
+
 ## 1.0.11
 
 ### Patch Changes
