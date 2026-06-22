@@ -20,4 +20,4 @@ program
         await prompt(options.source);
     });
 
-program.parse();
+await program.parseAsync();
