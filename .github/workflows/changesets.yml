@@ -1,0 +1,38 @@
+name: Changesets Status
+
+on:
+    pull_request_target:
+
+permissions: {}
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+
+jobs:
+    status:
+        name: Generate status
+        runs-on: ubuntu-slim
+        permissions:
+            contents: read
+        outputs:
+            comment-body: ${{ steps.status.outputs.comment-body }}
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+
+            - name: Generate Changesets status
+              id: status
+              uses: changesets/action/pr-status@v1
+
+    comment:
+        name: Update pull request comment
+        needs: status
+        runs-on: ubuntu-slim
+        permissions:
+            pull-requests: write
+        steps:
+            - name: Comment Changesets status
+              uses: changesets/action/pr-comment@v1
+              with:
+                  body: ${{ needs.status.outputs.comment-body }}

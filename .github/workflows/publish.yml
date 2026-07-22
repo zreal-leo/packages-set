@@ -1,25 +1,190 @@
-name: Publish Package
+name: Release
 
 on:
     push:
         branches:
             - main
 
-permissions:
-    id-token: write
-    contents: read
+permissions: {}
+
+concurrency:
+    group: release-${{ github.ref }}
+    cancel-in-progress: false
 
 jobs:
-    publish:
+    validate:
+        name: Validate
         runs-on: ubuntu-latest
-        if: github.event.head_commit && startsWith(github.event.head_commit.message, 'RELEASING')
+        permissions:
+            contents: read
         steps:
-            - uses: actions/checkout@v6
-            - uses: pnpm/action-setup@v6
-            - uses: actions/setup-node@v6
+            - name: Checkout repository
+              uses: actions/checkout@v6
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: '24'
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Check repository
+              run: pnpm run check
+
+    version:
+        name: Update Version Packages PR
+        needs: validate
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+        outputs:
+            has_changesets: ${{ steps.changesets.outputs.hasChangesets }}
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: '24'
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Create or update Version Packages PR
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                  version: pnpm run version
+                  commit: 'chore: version packages'
+                  title: 'chore: version packages'
+                  commitMode: github-api
+              env:
+                  GITHUB_TOKEN: ${{ github.token }}
+
+    detect:
+        name: Detect unpublished versions
+        needs: validate
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        outputs:
+            should_publish: ${{ steps.versions.outputs.should_publish }}
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: '24'
+
+            - name: Compare package versions with npm
+              id: versions
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  should_publish=false
+
+                  for manifest in packages/*/package.json; do
+                      name=$(node -p "require('./${manifest}').name")
+                      local_version=$(node -p "require('./${manifest}').version")
+
+                      if npm view "${name}@${local_version}" version >/dev/null 2>&1; then
+                          echo "${name}@${local_version} is already published"
+                          continue
+                      fi
+
+                      npm view "${name}" version >/dev/null
+                      echo "${name}@${local_version} is not published"
+                      should_publish=true
+                  done
+
+                  echo "should_publish=${should_publish}" >> "${GITHUB_OUTPUT}"
+
+    publish:
+        name: Publish packages
+        needs:
+            - validate
+            - version
+            - detect
+        if: needs.version.outputs.has_changesets == 'false' && needs.detect.outputs.should_publish == 'true'
+        runs-on: ubuntu-latest
+        environment: npm
+        permissions:
+            contents: write
+            id-token: write
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
               with:
                   node-version: '24'
                   registry-url: 'https://registry.npmjs.org'
-                  cache: 'pnpm'
-            - run: pnpm ci
-            - run: pnpm changeset publish
+                  package-manager-cache: false
+
+            - name: Ensure npm supports Trusted Publishing
+              run: npm install --global npm@11.5.1
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Check repository
+              run: pnpm run check
+
+            - name: Publish packages
+              id: publish
+              continue-on-error: true
+              run: pnpm run publish:packages
+
+            - name: Push package tags
+              run: git push origin --tags
+
+            - name: Create GitHub Releases
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              shell: bash
+              run: |
+                  set -euo pipefail
+
+                  for manifest in packages/*/package.json; do
+                      name=$(node -p "require('./${manifest}').name")
+                      version=$(node -p "require('./${manifest}').version")
+                      tag="${name}@${version}"
+
+                      if ! git rev-parse --verify --quiet "refs/tags/${tag}" >/dev/null; then
+                          continue
+                      fi
+
+                      if gh release view "${tag}" >/dev/null 2>&1; then
+                          continue
+                      fi
+
+                      gh release create "${tag}" \
+                          --verify-tag \
+                          --title "${tag}" \
+                          --generate-notes
+
+            - name: Report publish failure
+              if: always() && steps.publish.outcome == 'failure'
+              shell: bash
+              run: |
+                  echo "Package publication failed after synchronizing successful package tags."
+                  exit 1

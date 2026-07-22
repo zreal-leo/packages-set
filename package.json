@@ -12,24 +12,29 @@
     },
     "type": "module",
     "scripts": {
+        "build": "pnpm --recursive --if-present run build",
+        "changeset": "changeset add",
+        "check": "pnpm run typecheck && pnpm run lint && pnpm run build",
         "fmt": "oxfmt build packages",
-        "lint": "npm run typecheck && oxlint --fix build packages",
+        "lint": "oxlint build packages",
+        "lint:fix": "oxlint --fix build packages",
+        "plop": "plop",
         "prepare": "[ -n \"$CI\" ] || simple-git-hooks",
-        "release": "changeset add && changeset version",
+        "publish:packages": "changeset publish",
         "typecheck": "tsc --noEmit",
-        "plop": "plop"
+        "version": "changeset version"
     },
     "devDependencies": {
-        "@changesets/cli": "^2.31.0",
+        "@changesets/cli": "^2.31.1",
         "@types/fs-extra": "^11.0.4",
-        "@types/node": "^25.9.3",
-        "lint-staged": "^17.0.7",
-        "oxfmt": "^0.55.0",
-        "oxlint": "^1.70.0",
+        "@types/node": "^26.1.1",
+        "lint-staged": "^17.1.0",
+        "oxfmt": "^0.59.0",
+        "oxlint": "^1.74.0",
         "plop": "^4.0.5",
         "simple-git-hooks": "^2.13.1",
-        "typescript": "^6.0.3",
-        "vite": "^8.0.16"
+        "typescript": "^7.0.2",
+        "vite": "^8.1.5"
     },
     "simple-git-hooks": {
         "pre-commit": "pnpm run lint && pnpm exec lint-staged"
@@ -39,5 +44,5 @@
             "oxfmt --write"
         ]
     },
-    "packageManager": "pnpm@11.0.9"
+    "packageManager": "pnpm@11.15.1"
 }

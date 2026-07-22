@@ -11,7 +11,7 @@
     "author": "",
     "repository": {
         "type": "git",
-        "url": "git@github.com:zreal-leo/packages-set",
+        "url": "git+https://github.com/zreal-leo/packages-set.git",
         "directory": "packages/branch-helper"
     },
     "bin": "./dist/command.js",
@@ -29,6 +29,6 @@
         "await-to-js": "^3.0.0",
         "chalk": "^5.6.2",
         "commander": "^15.0.0",
-        "fs-extra": "^11.3.5"
+        "fs-extra": "^11.3.6"
     }
 }
